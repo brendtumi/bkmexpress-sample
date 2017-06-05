@@ -1,0 +1,18 @@
+{
+  "name": "bkmexpress.test",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bkmexpress": "^2.0.0-beta.8",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "^2.6.8",
+    "express": "^4.15.3",
+    "jade": "~1.11.0",
+    "morgan": "^1.8.2",
+    "serve-favicon": "^2.4.3"
+  }
+}

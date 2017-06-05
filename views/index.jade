@@ -1,0 +1,40 @@
+doctype html
+html
+    head
+        script(src="#{baseUrl}", type="text/javascript")
+        style.
+            code {
+                word-wrap: break-word
+            }
+        link(rel="shortcut icon", type="image/x-icon", href="https://bkmexpress.com.tr/wp-content/themes/bkmexpress/images/favicon.png")
+    body
+        #payment-dropin
+        p
+            b ticketId
+            br
+            code #{ticketId}
+        p
+            b ticketPath
+            br
+            code #{ticketPath}
+        p
+            b ticketToken
+            br
+            code #{ticketToken}
+        script(type="text/javascript").
+            // Client SDK'daki BKM Express ile Öde Butonunun Kullanımı
+            var ticketIdForInit = "#{ticketId}";
+            var ticketPathForInit = "#{ticketPath}";
+            var ticketTokenForInit = "#{ticketToken}";
+
+            Bex.init({"id": ticketIdForInit, "path": ticketPathForInit, "token": ticketTokenForInit}, "modal", {
+                container: "payment-dropin",
+                buttonSize: [135, 70],
+                onCancel: function () {
+                    console.log("ödeme işlemi iptal edildiğinde yapılacak işlemler için kullanılacak callback. Ticket'ı yenilemek gibi işlemleri bu callback içinde yapabilirsiniz.");
+                    location.reload();
+                },
+                onComplete: function (status) {
+                    console.log("ödeme tamamlandığında yapılacak işlemler için kullanılacak callback", status);
+                }
+            });
