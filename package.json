@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bkmexpress": "^2.0.0-beta.8",
+    "bkmexpress": "^2.0.0-rc.0",
     "body-parser": "^1.17.2",
     "cookie-parser": "~1.4.3",
     "debug": "^2.6.8",

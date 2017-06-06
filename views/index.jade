@@ -36,5 +36,6 @@ html
                 },
                 onComplete: function (status) {
                     console.log("ödeme tamamlandığında yapılacak işlemler için kullanılacak callback", status);
+                    document.location.href = "/result/" + ticketPathForInit;
                 }
             });
