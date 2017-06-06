@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const debug = require('debug')('bkmexpress.test:app');
-
+const debug = require('debug')('test:app');
 const fs = require("fs");
+
 const Bex = require("bkmexpress");
 
 const privateKey = fs.readFileSync("./client.privatePKCS8.pem").toString(); // "PRIVATE-KEY"
@@ -16,7 +16,6 @@ const urlForNonce = urlBase + "/bkm/nonce";
 
 // Connection Token'ın Alınabilmesi için Gerekli Konfigürasyonun Yapılması
 const config = Bex.BexPayment.startBexPayment(Bex.Environment.SANDBOX, merchantId, privateKey);
-let lastConnectionToken = null;
 
 router.get('/', function (req, res, next) {
     const merchantService = new Bex.MerchantService(config);
@@ -50,7 +49,6 @@ router.get('/', function (req, res, next) {
             next(err);
         });
 });
-
 router.post('/bkm/installments', function (req, res) {
     // Endpoint'in Oluşturulması
     debug("Request from BKM", req.body);
@@ -175,7 +173,6 @@ router.post('/bkm/nonce', function (req, res) {
         res.json(response);
     }
 });
-
 router.get('/result/:ticketPath', function (req, res) {
     debug("nonce", {method: req.method, query: req.query, params: req.params, body: req.body});
     // Ödeme İşlemi Sorgulama Endpoint'i Örneği
