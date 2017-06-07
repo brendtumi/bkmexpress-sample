@@ -24,10 +24,9 @@ router.get('/', function (req, res, next) {
     merchantService.login()
         .then(function (loginResponse) {
             // Ticket Token'ı Üretilmesi
-            const ticketResponse = merchantService.oneTimeTicket(loginResponse.Token, 1, urlForInstallments, urlForNonce);
+            const ticketResponse = merchantService.oneTimeTicket(loginResponse.Token, 60, urlForInstallments, urlForNonce);
             ticketResponse
                 .then(function (response2) {
-
                     // Ticket Token'ın Ön Yüze İletilmesi
                     res.render('index', {
                         // Client SDK url'ini kendiniz manuel girebilirsiniz
@@ -95,8 +94,10 @@ router.post('/bkm/installments', function (req, res) {
                         break;
                 }
 
-                let installment = new Bex.Installment("1", Bex.MoneyUtils.toTRY(amount), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
-                installmentsForThisBin.push(installment);
+                for (let i = 1; i < 6; i++) {
+                    let installment = new Bex.Installment(i.toString(), Bex.MoneyUtils.toTRY(amount / i), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
+                    installmentsForThisBin.push(installment);
+                }
                 // - end
                 allInstallmentsForEveryBin[binAndBank.Bin] = installmentsForThisBin;
             }
