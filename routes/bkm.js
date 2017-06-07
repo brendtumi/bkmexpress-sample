@@ -67,15 +67,33 @@ router.post('/bkm/installments', function (req, res) {
                 let bankCode = binAndBank.BankCode;
                 let installmentsForThisBin = [];
 
+                let vposConfig = new Bex.VposConfig();
                 // baska bankalar icin vpos hazirlama
 
-                let vposConfig = new Bex.VposConfig();
-                vposConfig.BankIndicator = bankCode;
-                vposConfig.VposUserId = "akapi";
-                vposConfig.VposPassword = "TEST1234";
-                vposConfig.addExtra("ClientId", "100111222");
-                vposConfig.addExtra("storekey", "TEST1234");
-                vposConfig.ServiceUrl = "http://srvirt01:7200/akbank";
+                debug("bankCode", bankCode);
+                switch (bankCode) {
+                    case Bex.Banks.ZIRAATBANK:
+                        // Eger istenilen banka icin pos'unuz mevcutsa
+                        vposConfig.BankIndicator = Bex.Banks.ZIRAATBANK;
+                        vposConfig.VposUserId = "bkmtest";
+                        vposConfig.VposPassword = "TEST1691";
+                        vposConfig.addExtra("ClientId", "190001691");
+                        vposConfig.addExtra("storekey", "TRPS1691");
+                        vposConfig.addExtra("orderId", "9073194");
+                        vposConfig.ServiceUrl = "http://srvirt01:7200/ziraat";
+                        break;
+
+                    case Bex.Banks.AKBANK:
+                    default:
+                        // Yoksa varsayılan bankanız
+                        vposConfig.BankIndicator = Bex.Banks.AKBANK;
+                        vposConfig.VposUserId = "akapi";
+                        vposConfig.VposPassword = "TEST1234";
+                        vposConfig.addExtra("ClientId", "100111222");
+                        vposConfig.addExtra("storekey", "TEST1234");
+                        vposConfig.ServiceUrl = "http://srvirt01:7200/akbank";
+                        break;
+                }
 
                 let installment = new Bex.Installment("1", Bex.MoneyUtils.toTRY(amount), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
                 installmentsForThisBin.push(installment);
