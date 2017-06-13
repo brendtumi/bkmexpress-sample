@@ -19,12 +19,13 @@ const config = Bex.BexPayment.startBexPayment(Bex.Environment.SANDBOX, merchantI
 
 router.get('/', function (req, res, next) {
     const merchantService = new Bex.MerchantService(config);
+    let amount = Math.round(Math.random()*10000) / 100;
 
     // Connection Token'ın Alınması
     merchantService.login()
         .then(function (loginResponse) {
             // Ticket Token'ı Üretilmesi
-            const ticketResponse = merchantService.oneTimeTicket(loginResponse.Token, 60, urlForInstallments, urlForNonce);
+            const ticketResponse = merchantService.oneTimeTicket(loginResponse.Token, amount, urlForInstallments, urlForNonce);
             ticketResponse
                 .then(function (response2) {
                     // Ticket Token'ın Ön Yüze İletilmesi
@@ -81,7 +82,15 @@ router.post('/bkm/installments', function (req, res) {
                         vposConfig.addExtra("orderId", "9073194");
                         vposConfig.ServiceUrl = "http://srvirt01:7200/ziraat";
                         break;
-
+                    case Bex.Banks.ISBANK:
+                        // Eger istenilen banka icin pos'unuz mevcutsa
+                        vposConfig.BankIndicator = Bex.Banks.ISBANK;
+                        vposConfig.VposUserId = "bkmapi";
+                        vposConfig.VposPassword = "KUTU8900";
+                        vposConfig.addExtra("ClientId", "700655047520");
+                        vposConfig.addExtra("storekey", "TEST123456");
+                        vposConfig.ServiceUrl = "http://srvirt01:7200/isbank";
+                        break;
                     case Bex.Banks.AKBANK:
                     default:
                         // Yoksa varsayılan bankanız
