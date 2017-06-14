@@ -20,6 +20,9 @@ const config = Bex.BexPayment.startBexPayment(Bex.Environment.SANDBOX, merchantI
 router.get('/', function (req, res, next) {
     const merchantService = new Bex.MerchantService(config);
     let amount = Math.round(Math.random() * 10000) / 100;
+    if (req.query.amount) {
+        amount = parseFloat(req.query.amount);
+    }
 
     // Connection Token'ın Alınması
     merchantService.login()
