@@ -120,8 +120,10 @@ router.post('/bkm/installments', function (req, res) {
                 }
 
                 for (let i = 1; i <= inst; i++) {
-                    let installment = new Bex.Installment(i.toString(), Bex.MoneyUtils.toTRY(amount / i), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
-                    installmentsForThisBin.push(installment);
+                    if (i === 1 || i % 3 === 0) {
+                        let installment = new Bex.Installment(i.toString(), Bex.MoneyUtils.toTRY(amount / i), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
+                        installmentsForThisBin.push(installment);
+                    }
                 }
 
                 // - end
