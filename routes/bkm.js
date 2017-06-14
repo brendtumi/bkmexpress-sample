@@ -19,7 +19,7 @@ const config = Bex.BexPayment.startBexPayment(Bex.Environment.SANDBOX, merchantI
 
 router.get('/', function (req, res, next) {
     const merchantService = new Bex.MerchantService(config);
-    let amount = Math.round(Math.random()*10000) / 100;
+    let amount = Math.round(Math.random() * 10000) / 100;
 
     // Connection Token'ın Alınması
     merchantService.login()
@@ -103,10 +103,27 @@ router.post('/bkm/installments', function (req, res) {
                         break;
                 }
 
-                for (let i = 1; i < 6; i++) {
+                let inst = 6;
+                switch (bankCode) {
+                    case Bex.Banks.AKBANK:
+                        inst = 9;
+                        break;
+                    case Bex.Banks.ISBANK:
+                        inst = 6;
+                        break;
+                    case Bex.Banks.ZIRAATBANK:
+                        inst = 3;
+                        break;
+                    default:
+                        inst = 1;
+                        break;
+                }
+
+                for (let i = 1; i <= inst; i++) {
                     let installment = new Bex.Installment(i.toString(), Bex.MoneyUtils.toTRY(amount / i), Bex.MoneyUtils.toTRY(amount), Bex.EncryptionUtil.encryptWithBex(vposConfig));
                     installmentsForThisBin.push(installment);
                 }
+
                 // - end
                 allInstallmentsForEveryBin[binAndBank.Bin] = installmentsForThisBin;
             }
