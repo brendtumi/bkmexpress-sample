@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "bkmexpress": "^2.0.0",
@@ -13,6 +15,8 @@
     "express": "^4.15.3",
     "jade": "~1.11.0",
     "morgan": "^1.8.2",
-    "serve-favicon": "^2.4.3"
-  }
+    "serve-favicon": "^2.4.3",
+    "snyk": "^1.54.1"
+  },
+  "snyk": true
 }
